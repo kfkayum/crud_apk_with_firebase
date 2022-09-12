@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AddStudent extends StatefulWidget {
@@ -23,8 +24,18 @@ class _AddStudentState extends State<AddStudent> {
 
   final passwordController = TextEditingController();
 
-  addUser() {
-    print('User Added');
+  CollectionReference students =
+      FirebaseFirestore.instance.collection('students');
+
+  Future<void> addUser() {
+    return students
+        .add({
+          'name': name,
+          'email': email,
+          'password': password,
+        })
+        .then((value) => print('User Delete'))
+        .catchError((error) => print('Fail to delete user: $error'));
   }
 
   clearText() {
